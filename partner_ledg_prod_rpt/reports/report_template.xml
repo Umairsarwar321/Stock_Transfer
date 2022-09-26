@@ -1,0 +1,80 @@
+<odoo>
+    <data>
+        <template id="prtnr_ldgr_rpt_prod_wise">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <t t-foreach="docs" t-as="o">
+                        <div class="page">
+                            <style>
+                                .table th, td{ padding-left: 5px;}
+                                .custom_font { font-size: 20px;}
+                            </style>
+                            <table width="100%" style="margin-top: -50px;">
+                                <tr>
+                                    <td class="custom_font tex-right" width="15%">Partner :
+                                    </td>
+                                    <td class="custom_font text-left" width="20%">
+                                        <span t-field="o.name"/>
+                                    </td>
+                                    <td width="65%"></td>
+                                </tr>
+                                <tr>
+                                    <td class="custom_font tex-right" width="15%">Contact :
+                                    </td>
+                                    <td class="custom_font text-left" width="20%">
+                                        <span t-field="o.mobile"/>
+                                    </td>
+                                    <td width="65%"></td>
+                                </tr>
+                                <tr>
+                                    <td class="custom_font tex-right" width="15%">NTN :
+                                    </td>
+                                    <td class="custom_font text-left" width="20%">
+                                        <span t-field="o.vat"/>
+                                    </td>
+                                    <td width="65%"></td>
+                                </tr>
+                            </table>
+                            <br/>
+                            <table width="100%" class="table table-bordered">
+                                <thead class="thead-dark">
+                                    <th width="17%">Date</th>
+                                    <th width="7%">Journal</th>
+                                    <th width="46%">Label</th>
+                                    <th width="10%">Debit</th>
+                                    <th width="10%">Credit</th>
+                                    <th width="10%">Balance</th>
+                                </thead>
+                                <t t-set="initial_balance" t-value="0"/>
+                                <t t-foreach="ledger_data" t-as="ld">
+                                    <tbody>
+                                        <td>
+                                            <t t-esc="ld['date']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="ld['journal']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="ld['label']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="ld['credit']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="ld['debit']"/>
+                                            <t t-set="initial_balance"
+                                               t-value="(ld['credit'] + initial_balance) - ld['debit']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="initial_balance" t-options='{"widget": "float", "precision": 2}'/>
+                                        </td>
+                                    </tbody>
+                                </t>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
